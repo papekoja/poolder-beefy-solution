@@ -36,9 +36,13 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <h1 className="">Beefy Pools</h1>
-      <DataTable columns={columns} data={pools} />
+    <div className="flex flex-col mx-auto px-10">
+      <div className="flex">
+        <h1 className="text-6xl">Beefy Pools</h1>
+      </div>
+      <div className="container mx-auto py-10">
+        <DataTable columns={columns} data={pools} />
+      </div>
     </div>
   );
 }

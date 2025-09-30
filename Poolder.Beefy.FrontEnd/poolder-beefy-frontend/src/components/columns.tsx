@@ -1,6 +1,8 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
+import { Button } from "./ui/button";
+import { ArrowUpDown } from "lucide-react";
 
 export type PoolData = {
   name: string;
@@ -12,19 +14,73 @@ export type PoolData = {
 
 export const columns: ColumnDef<PoolData>[] = [
   {
-    accessorKey: "id",
-    header: "Id",
+    accessorKey: "name",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Name
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
   },
   {
     accessorKey: "tokens",
     header: "Tokens",
+    cell: ({ row }) => {
+      const tokens: string[] = row.getValue("tokens") ?? [];
+
+      return (
+        <div className="flex flex-col items-end gap-1">
+          {tokens.map((token, i) => {
+            return <span key={i}>{token}</span>;
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "balances",
-    header: "Balances",
+    header: () => <div className="text-right">Balances</div>,
+    cell: ({ row }) => {
+      const balances: string[] = row.getValue("balances") ?? [];
+
+      return (
+        <div className="flex flex-col items-end gap-1">
+          {balances.map((balance, i) => {
+            const amount = parseFloat(balance);
+            const formatted = new Intl.NumberFormat("de-DE", {
+              style: "currency",
+              currency: "EUR",
+            }).format(amount);
+
+            return (
+              <span key={i} className="text-right font-medium">
+                {formatted}
+              </span>
+            );
+          })}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "totalSupply",
     header: "Total Supply",
+    cell: ({ row }) => {
+      const rawValue: string = row.getValue("totalSupply");
+      const amount = parseFloat(rawValue);
+
+      // Format with max 6 decimals, but no trailing zeros
+      const formatted = new Intl.NumberFormat("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 6,
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
   },
 ];
