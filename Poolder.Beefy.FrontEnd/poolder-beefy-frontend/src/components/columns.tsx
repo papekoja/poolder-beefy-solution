@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "./ui/button";
 import { ArrowUpDown } from "lucide-react";
+import { DataTableColumnHeader } from "./data-table-column-header";
 
 export type PoolData = {
   name: string;
@@ -15,21 +16,15 @@ export type PoolData = {
 export const columns: ColumnDef<PoolData>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Name" />
+    ),
   },
   {
     accessorKey: "tokens",
-    header: "Tokens",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Tokens" />
+    ),
     cell: ({ row }) => {
       const tokens: string[] = row.getValue("tokens") ?? [];
 
@@ -69,7 +64,9 @@ export const columns: ColumnDef<PoolData>[] = [
   },
   {
     accessorKey: "totalSupply",
-    header: "Total Supply",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Total Supply" />
+    ),
     cell: ({ row }) => {
       const rawValue: string = row.getValue("totalSupply");
       const amount = parseFloat(rawValue);
