@@ -6,7 +6,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 builder.Services.AddHttpClient();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
@@ -17,6 +16,13 @@ builder.Services.AddCors(options =>
                   .AllowAnyMethod();
         });
 });
+builder.Services.AddStackExchangeRedisCache(options =>
+ {
+     options.Configuration = builder.Configuration.GetConnectionString("Redis");
+     options.InstanceName = "PoolderBeefyApi";
+ });
+builder.Services.AddScoped<IBeefyService, BeefyService>();
+
 
 var app = builder.Build();
 

@@ -1,7 +1,14 @@
-[] create a table for the statistics
+[x] create a table for the statistics
 [] get and parse the real name for each token
 [] associate each token with their balance
-[] add so that you can click on each table row
+[] add so that you can click on each table row to see more details
 [] add a header
+[] add glossy loading skeleton
 [] move api requests to service
 [] add redis caching on backend
+
+for readme:
+npm install
+run command on both sides
+install redis instance
+make sure connection string matches port

@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Poolder.Beefy.API.Models;
@@ -10,25 +9,18 @@ namespace Poolder.Beefy.API.Controllers;
 [ApiController]
 public class BeefyController : Controller
 {
-    private readonly HttpClient _httpClient;
+    private readonly IBeefyService _beefyService;
 
-    public BeefyController(IHttpClientFactory factory)
+    public BeefyController(IBeefyService beefyService)
     {
-        _httpClient = factory.CreateClient("Beefy Api");
+        _beefyService = beefyService;
     }
 
     [EnableCors("AllowFrontend")]
     [HttpGet("lps/breakdown")]
-    public async Task<ActionResult<LpsResponse>> GetApyBreakdown()
+    public async Task<ActionResult<PoolResponse>> GetApyBreakdown()
     {
-        var url = "https://api.beefy.finance/lps/breakdown"; 
-        var json = await _httpClient.GetStringAsync(url);
-
-        var pools = JsonSerializer.Deserialize<LpsResponse>(json, new JsonSerializerOptions
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        });
-
+        var pools = await _beefyService.GetPoolsAsync();
         return Ok(pools);
     }
 }

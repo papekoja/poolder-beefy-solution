@@ -19,9 +19,9 @@ using System.Text.Json.Serialization;
 
 namespace Poolder.Beefy.API.Models;
 
-public class LpsResponse : Dictionary<string, Lp> { }
+public class PoolResponse : Dictionary<string, PoolData> { }
 
-public class Lp
+public class PoolData
 {
     [JsonPropertyName("price")]
     public double? Price { get; set; }
