@@ -1,53 +1,44 @@
 "use client";
 
+import { columns, PoolData } from "@/components/columns";
+import { DataTable } from "@/components/data-table";
 import { useEffect, useState } from "react";
 
-interface PoolData {
-  price?: number;
-  tokens?: string[];
-  balances?: string[];
-  totalSupply?: string;
+type PoolsResponse = Record<string, Omit<PoolData, "name">>;
+
+function convertToList(response: PoolsResponse): PoolData[] {
+  return Object.entries(response).map(([name, pool]) => ({
+    name,
+    ...pool,
+  }));
 }
 
-type PoolsResponse = Record<string, PoolData>;
-
 export default function Home() {
-  const [pools, setPools] = useState<PoolsResponse | null>(null);
+  const [pools, setPools] = useState<PoolData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchPools = async () => {
       try {
         const response = await fetch(
           "http://localhost:5266/api/Beefy/lps/breakdown"
         );
-        const data = await response.json();
-        setPools(data);
+        const data: PoolsResponse = await response.json();
+        setPools(convertToList(data));
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
         setLoading(false);
       }
     };
-    fetchProducts();
-  }, []);
 
-  if (loading) return <p>Loading...</p>;
+    fetchPools();
+  }, []);
 
   return (
     <div>
-      <h1>Beefy Pools</h1>
-      <ul>
-        {pools && Object.entries(pools).map(([name, pool]) => (
-          <tr key={name}>
-            <td>{name}</td>
-            <td>{pool.price ?? "N/A"}</td>
-            <td>{pool.totalSupply ?? "N/A"}</td>
-            <td>{pool.tokens?.join(", ") ?? "N/A"}</td>
-            <td>{pool.balances?.join(", ") ?? "N/A"}</td>
-          </tr>
-        ))}
-      </ul>
+      <h1 className="">Beefy Pools</h1>
+      <DataTable columns={columns} data={pools} />
     </div>
   );
 }
