@@ -52,6 +52,7 @@ public class BeefyService : IBeefyService
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         });
 
+        // Replace token address with token name
         var tokens = await GetTokensAsync();
 
         var tokenLookup = tokens
