@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col mx-auto px-10">
-      <div className="flex items-center mt-6 md:ml-16 space-x-2">
+      <div className="flex items-center mt-4 md:ml-16 space-x-2">
         <h1 className={`${monsterrat_alternates.className} font-black text-6xl`}>Beefy Pools</h1>
         <Droplet size={48} color='#3ae8a2' />
       </div>

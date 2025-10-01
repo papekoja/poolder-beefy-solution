@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { monsterrat } from "@/components/utils/fonts";
-
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/mode-toggle";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,11 +15,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${monsterrat.className} antialiased dark`}
-      >
-        <main>{children}</main>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${monsterrat.className} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex justify-end m-2">
+            <ModeToggle />
+          </div>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

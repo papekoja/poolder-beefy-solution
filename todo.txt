@@ -5,7 +5,7 @@
 [x] move api requests to service
 [x] add redis caching on backend
 [] add so that you can click on each table row to see more details
-[] modify fonts and header
+[x] modify fonts and header
 [] dark mode button
 [] add a readme
 [] total supply calculation
