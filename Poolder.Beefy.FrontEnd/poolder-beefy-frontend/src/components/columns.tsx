@@ -3,6 +3,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import { Badge } from "./ui/badge";
+import { DollarSign } from "lucide-react";
 
 export type PoolData = {
   name: string;
@@ -20,9 +21,7 @@ export const columns: ColumnDef<PoolData>[] = [
     ),
     cell: ({ row }) => {
       const name: string = row.getValue("name") ?? "";
-      return (
-      <p className="font-bold text-lg">{name}</p>
-      );
+      return <p className="font-bold text-lg">{name}</p>;
     },
   },
   {
@@ -57,13 +56,18 @@ export const columns: ColumnDef<PoolData>[] = [
           {balances.map((balance, i) => {
             const amount = parseFloat(balance);
             const formatted = new Intl.NumberFormat("de-DE", {
-              style: "currency",
-              currency: "EUR",
+              style: "decimal",
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 3,
             }).format(amount);
 
             return (
-              <span key={i} className="text-right font-medium">
-                {formatted}
+              <span
+                key={i}
+                className="flex flex-row items-center text-right font-medium"
+              >
+                <span>{formatted}</span>
+                <DollarSign size={14} />
               </span>
             );
           })}
