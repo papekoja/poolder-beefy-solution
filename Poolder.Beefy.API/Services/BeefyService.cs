@@ -5,6 +5,7 @@ using Poolder.Beefy.API.Models;
 public interface IBeefyService
 {
     Task<PoolResponse> GetPoolsAsync();
+    Task<List<TokenData>> GetTokensAsync();
 }
 
 public class BeefyService : IBeefyService
@@ -22,30 +23,28 @@ public class BeefyService : IBeefyService
     {
         const string cacheKey = "beefy:pool";
 
-        // Step 1: Try to get the item from Redis cache
-        var cachedItem = await _cache.GetStringAsync(cacheKey);
-        if (cachedItem != null)
-        {
-            Console.WriteLine("✅ Item retrieved from cache!");
-            return JsonSerializer.Deserialize<PoolResponse>(cachedItem, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            }) ?? [];
-        }
-
-        // Step 2: fetch data from beefy
-        var url = "https://api.beefy.finance/lps/breakdown";
-        var json = await _httpClient.GetStringAsync(url);
-
+        // Try to get the item from Redis cache
+        var json = await _cache.GetStringAsync(cacheKey);
         if (json != null)
         {
-            // Step 3: Cache the item in Redis
-            await _cache.SetStringAsync(
-                cacheKey,
-                json,
-                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = _cacheExpiry }
-            );
-            Console.WriteLine("🔄 Item added to cache.");
+            Console.WriteLine("✅ Item retrieved from cache!");
+        }
+        else
+        {
+            var url = "https://api.beefy.finance/lps/breakdown";
+            json = await _httpClient.GetStringAsync(url);
+
+            if (json != null)
+            {
+                // Cache the item in Redis
+                await _cache.SetStringAsync(
+                    cacheKey,
+                    json,
+                    new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = _cacheExpiry }
+                );
+                Console.WriteLine("Pool breakdown added to cache.");
+            }
+
         }
 
         var pools = JsonSerializer.Deserialize<PoolResponse>(json ?? "", new JsonSerializerOptions
@@ -53,6 +52,78 @@ public class BeefyService : IBeefyService
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         });
 
+        var tokens = await GetTokensAsync();
+
+        var tokenLookup = tokens
+        .DistinctBy(t => t.Address.ToLower())
+        .ToDictionary(t => t.Address.ToLower(), t => t.Symbol);
+
+        foreach (var pool in pools.Values)
+        {
+            if (pool?.Tokens != null)
+            {
+                pool.Tokens = pool.Tokens
+                    .Select(addr =>
+                    {
+                        if (addr == null) return string.Empty;
+                        if (tokenLookup.TryGetValue(addr.ToLower(), out var symbol))
+                            return symbol;
+                        return addr;
+                    })
+                    .ToList();
+            }
+        }
+
         return pools ?? [];
+    }
+
+    public async Task<List<TokenData>> GetTokensAsync()
+    {
+        const string cacheKey = "beefy:tokens";
+
+        string? json = await _cache.GetStringAsync(cacheKey);
+
+        if (json != null)
+        {
+            Console.WriteLine("✅ Item retrieved from cache!");
+        }
+        else
+        {
+            // Fetch fresh data
+            var url = "https://api.beefy.finance/tokens";
+            json = await _httpClient.GetStringAsync(url);
+
+            // Cache the fresh data
+            await _cache.SetStringAsync(
+                cacheKey,
+                json,
+                new DistributedCacheEntryOptions
+                {
+                    AbsoluteExpirationRelativeToNow = _cacheExpiry
+                }
+            );
+            Console.WriteLine("Tokens added to cache.");
+        }
+
+        // Deserialize into nested dictionary
+        var tokenResponse = JsonSerializer.Deserialize<TokenResponse>(json, new JsonSerializerOptions
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        });
+
+        // Flatten into a list
+        var tokens = tokenResponse?
+            .SelectMany(chainEntry =>
+                chainEntry.Value.Select(kvp =>
+                {
+                    var token = kvp.Value;
+                    token.Chain = chainEntry.Key; // attach chain info
+                    return token;
+                })
+            )
+            .ToList()
+            ?? new List<TokenData>();
+
+        return tokens;
     }
 }

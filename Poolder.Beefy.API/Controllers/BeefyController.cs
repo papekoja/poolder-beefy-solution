@@ -23,4 +23,12 @@ public class BeefyController : Controller
         var pools = await _beefyService.GetPoolsAsync();
         return Ok(pools);
     }
+
+    [EnableCors("AllowFrontend")]
+    [HttpGet("tokens")]
+    public async Task<ActionResult<List<TokenData>>> GetTokens()
+    {
+        var tokens = await _beefyService.GetTokensAsync();
+        return Ok(tokens);
+    }
 }
