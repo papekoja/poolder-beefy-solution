@@ -1,6 +1,6 @@
 # Poolder Beefy LP Table
 ## Run with docker
-Simply run this command in the root folder:
+In project root:
 ```
 docker compose up
 ```
