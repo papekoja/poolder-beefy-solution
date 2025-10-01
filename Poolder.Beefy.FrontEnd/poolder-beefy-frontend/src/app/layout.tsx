@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { geistMono, geistSans } from "@/components/utils/fonts";
+import { monsterrat } from "@/components/utils/fonts";
 
 
 export const metadata: Metadata = {
@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark`}
+        className={`${monsterrat.className} antialiased dark`}
       >
         <main>{children}</main>
       </body>
