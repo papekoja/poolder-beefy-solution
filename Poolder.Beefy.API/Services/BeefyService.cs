@@ -12,7 +12,7 @@ public class BeefyService : IBeefyService
 {
     private readonly HttpClient _httpClient;
     private readonly IDistributedCache _cache;
-    private readonly TimeSpan _cacheExpiry = TimeSpan.FromMinutes(1);
+    private readonly TimeSpan _cacheExpiry = TimeSpan.FromMinutes(5);
     public BeefyService(IHttpClientFactory factory, IDistributedCache cache)
     {
         _httpClient = factory.CreateClient("Beefy Api");
@@ -117,7 +117,7 @@ public class BeefyService : IBeefyService
                 chainEntry.Value.Select(kvp =>
                 {
                     var token = kvp.Value;
-                    token.Chain = chainEntry.Key; // attach chain info
+                    token.Chain = chainEntry.Key; 
                     return token;
                 })
             )
