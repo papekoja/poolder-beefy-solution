@@ -20,7 +20,7 @@ export function TotalPoolValue({ data }: TotalSupplyProps) {
 
   return (
     <div className="flex flex-col">
-      <p>Total Supply:</p>
+      <p>Total Pool Value:</p>
       <p className={`${lora.className} text-3xl`}>${formatted}</p>
     </div>
   );
