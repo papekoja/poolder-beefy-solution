@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTableColumnHeader } from "./data-table-column-header";
+import { Badge } from "./ui/badge";
 
 export type PoolData = {
   name: string;
@@ -29,7 +30,7 @@ export const columns: ColumnDef<PoolData>[] = [
       return (
         <div className="flex flex-col items-end gap-1">
           {tokens.map((token, i) => {
-            return <span key={i}>{token}</span>;
+            return <Badge key={i} variant="secondary">{token}</Badge>;
           })}
         </div>
       );
