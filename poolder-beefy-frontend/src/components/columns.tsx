@@ -26,7 +26,7 @@ export const columns: ColumnDef<PoolData>[] = [
   },
   {
     accessorKey: "tokens",
-    header: ({ column }) => <div className="flex justify-end">Tokens</div>,
+    header: () => <div className="flex justify-end">Tokens</div>,
     cell: ({ row }) => {
       const tokens: string[] = row.getValue("tokens") ?? [];
 

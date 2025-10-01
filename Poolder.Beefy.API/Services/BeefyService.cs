@@ -55,24 +55,30 @@ public class BeefyService : IBeefyService
         var tokens = await GetTokensAsync();
 
         var tokenLookup = tokens
-        .DistinctBy(t => t.Address.ToLower())
-        .ToDictionary(t => t.Address.ToLower(), t => t.Symbol);
+        .Where(t => !string.IsNullOrWhiteSpace(t.Address))
+        .DistinctBy(t => t.Address!.ToLower())
+        .ToDictionary(t => t.Address!.ToLower(), t => t.Symbol);
 
-        foreach (var pool in pools.Values)
+        if (pools != null)
         {
-            if (pool?.Tokens != null)
+            foreach (var pool in pools.Values.Where(p => p?.Tokens != null))
             {
-                pool.Tokens = pool.Tokens
-                    .Select(addr =>
-                    {
-                        if (addr == null) return string.Empty;
-                        if (tokenLookup.TryGetValue(addr.ToLower(), out var symbol))
-                            return symbol;
-                        return addr;
-                    })
-                    .ToList();
+                if (pool?.Tokens != null)
+                {
+                    pool.Tokens = pool.Tokens
+                    .Where(addr => !string.IsNullOrWhiteSpace(addr))
+                        .Select(addr =>
+                        {
+                            var key = addr!.ToLowerInvariant();
+                            return tokenLookup.TryGetValue(key, out var symbol)
+                            ? symbol
+                            : addr;
+                        })
+                        .ToList();
+                }
             }
         }
+
 
         return pools ?? [];
     }
@@ -117,7 +123,7 @@ public class BeefyService : IBeefyService
                 chainEntry.Value.Select(kvp =>
                 {
                     var token = kvp.Value;
-                    token.Chain = chainEntry.Key; 
+                    token.Chain = chainEntry.Key;
                     return token;
                 })
             )

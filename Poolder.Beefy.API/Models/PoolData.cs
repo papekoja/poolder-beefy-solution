@@ -26,7 +26,7 @@ public class PoolData
     [JsonPropertyName("price")]
     public double? Price { get; set; }
     [JsonPropertyName("tokens")]
-    public List<string>? Tokens { get; set; }
+    public List<string?>? Tokens { get; set; }
     [JsonPropertyName("balances")]
     public List<string>? balances { get; set; }
     [JsonPropertyName("totalSupply")]
