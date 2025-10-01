@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  redis:
+      image: redis:7-alpine
+      ports:
+        - "6379:6379"
+      networks:
+        - beefy-network
+      healthcheck:
+        test: ["CMD", "redis-cli", "ping"]
+        interval: 5s
+        timeout: 3s
+        retries: 5
+
+  backend:
+    build:
+      context: ./Poolder.Beefy.API
+      dockerfile: Dockerfile
+    ports:
+      - "5266:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__Redis=redis:6379
+    networks:
+      - beefy-network
+
+  frontend:
+    build:
+      context: ./Poolder.Beefy.FrontEnd/poolder-beefy-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8080
+    depends_on:
+      - backend
+    networks:
+      - beefy-network
+
+networks:
+  beefy-network:
+    driver: bridge
