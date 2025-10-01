@@ -28,7 +28,7 @@ services:
 
   frontend:
     build:
-      context: ./Poolder.Beefy.FrontEnd/poolder-beefy-frontend
+      context: ./poolder-beefy-frontend
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
