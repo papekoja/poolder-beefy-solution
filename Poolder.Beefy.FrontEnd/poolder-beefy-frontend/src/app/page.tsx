@@ -43,7 +43,7 @@ export default function Home() {
         <Droplet size={48} color='#3ae8a2' />
       </div>
       <div className="container mx-auto py-10">
-        <DataTable columns={columns} data={pools} />
+        <DataTable columns={columns} data={pools} isLoading={loading} />
       </div>
     </div>
   );
