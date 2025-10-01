@@ -11,9 +11,10 @@ This will start:
 - Frontend on port 3000
 ## Run locally
 **Prerequisite:**
-You need a running instance of Redis:
+
+A running instance of Redis.
 ```
-docker run --name my-redis -p 6379:6379 -d redis
+docker run --name beefy-api-cache -p 6379:6379 -d redis
 ```
 
 **Backend:**
