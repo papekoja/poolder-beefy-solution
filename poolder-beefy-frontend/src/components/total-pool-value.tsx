@@ -5,10 +5,11 @@ interface TotalSupplyProps {
   data: PoolData[];
 }
 
-export function TotalSupply({ data }: TotalSupplyProps) {
+export function TotalPoolValue({ data }: TotalSupplyProps) {
   const totalSupplySum = data.reduce((sum, pool) => {
     const supply = parseFloat(pool.totalSupply || "0");
-    return sum + supply;
+    const price = pool.price || 0;
+    return sum + price * supply;
   }, 0);
 
   const formatted = new Intl.NumberFormat("en-US", {

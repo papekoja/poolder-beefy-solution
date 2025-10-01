@@ -2,7 +2,7 @@
 
 import { columns, PoolData } from "@/components/columns";
 import { DataTable } from "@/components/data-table";
-import { TotalSupply } from "@/components/total-supply";
+import { TotalPoolValue } from "@/components/total-pool-value";
 import { monsterrat_alternates } from "@/components/utils/fonts";
 import { Droplet } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -49,7 +49,7 @@ export default function Home() {
           </h1>
           <Droplet size={48} color="#3ae8a2" />
         </div>
-        <TotalSupply data={pools} />
+        <TotalPoolValue data={pools} />
       </div>
       <div className="container mx-auto py-10">
         <DataTable columns={columns} data={pools} isLoading={loading} />

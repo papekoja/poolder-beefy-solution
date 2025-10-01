@@ -64,12 +64,8 @@ export const columns: ColumnDef<PoolData>[] = [
             }).format(amount);
 
             return (
-              <span
-                key={i}
-                className="flex flex-row items-center text-right font-medium"
-              >
-                <span>{formatted}</span>
-                <DollarSign size={14} />
+              <span key={i} className="text-right font-medium">
+                {formatted}
               </span>
             );
           })}
@@ -89,12 +85,37 @@ export const columns: ColumnDef<PoolData>[] = [
       const amount = parseFloat(rawValue);
 
       // Format with max 6 decimals, but no trailing zeros
-      const formatted = new Intl.NumberFormat("en-US", {
+      const formatted = new Intl.NumberFormat("de-DE", {
         minimumFractionDigits: 0,
-        maximumFractionDigits: 6,
+        maximumFractionDigits: 3,
       }).format(amount);
 
       return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }) => (
+      <div className="flex justify-center">
+        <DataTableColumnHeader column={column} title="Price" />
+      </div>
+    ),
+    cell: ({ row }) => {
+      const rawValue: string = row.getValue("price");
+      const amount = parseFloat(rawValue);
+
+      // Format with max 6 decimals, but no trailing zeros
+      const formatted = new Intl.NumberFormat("de-DE", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 3,
+      }).format(amount);
+
+      return (
+        <div className="flex flex-row justify-center items-center text-right font-medium">
+          <DollarSign size={14} />
+          <span>{formatted}</span>
+        </div>
+      );
     },
   },
 ];
