@@ -27,7 +27,9 @@ export const columns: ColumnDef<PoolData>[] = [
   {
     accessorKey: "tokens",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tokens" />
+      <div className="flex justify-end">
+        <DataTableColumnHeader column={column} title="Tokens" />
+      </div>
     ),
     cell: ({ row }) => {
       const tokens: string[] = row.getValue("tokens") ?? [];
@@ -78,7 +80,9 @@ export const columns: ColumnDef<PoolData>[] = [
   {
     accessorKey: "totalSupply",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Total Supply" />
+      <div className="flex justify-end">
+        <DataTableColumnHeader column={column} title="Total Supply" />
+      </div>
     ),
     cell: ({ row }) => {
       const rawValue: string = row.getValue("totalSupply");
