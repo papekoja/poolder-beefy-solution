@@ -7,15 +7,9 @@
 [] add so that you can click on each table row to see more details
 [x] modify fonts and header
 [x] dark mode button
-[] add a readme
+[x] add a readme
 [x] total supply calculation
 [] export to CSV
-[] docker compose
+[x] docker compose
 [] confirm that I display data right
 [] look through code
-
-for readme:
-npm install
-run command on both sides
-install redis instance
-make sure connection string matches port
