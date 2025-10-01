@@ -18,6 +18,12 @@ export const columns: ColumnDef<PoolData>[] = [
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Name" />
     ),
+    cell: ({ row }) => {
+      const name: string = row.getValue("name") ?? "";
+      return (
+      <p className="font-bold text-lg">{name}</p>
+      );
+    },
   },
   {
     accessorKey: "tokens",
@@ -30,7 +36,11 @@ export const columns: ColumnDef<PoolData>[] = [
       return (
         <div className="flex flex-col items-end gap-1">
           {tokens.map((token, i) => {
-            return <Badge key={i} variant="secondary">{token}</Badge>;
+            return (
+              <Badge key={i} variant="secondary">
+                {token}
+              </Badge>
+            );
           })}
         </div>
       );

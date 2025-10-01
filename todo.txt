@@ -1,5 +1,5 @@
 [x] create a table for the statistics
-[] get and parse the real name for each token
+[x] get and parse the real name for each token
 [x] associate each token with their balance
 [] add so that you can click on each table row to see more details
 [] add a header
