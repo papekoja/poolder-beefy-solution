@@ -1,4 +1,10 @@
-import { Geist, Geist_Mono, Montserrat, Montserrat_Alternates } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Lora,
+  Montserrat,
+  Montserrat_Alternates,
+} from "next/font/google";
 
 export const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,11 +19,17 @@ export const geistMono = Geist_Mono({
 export const monsterrat_alternates = Montserrat_Alternates({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900", "100", "200"],
-  display: "swap"
+  display: "swap",
 });
 
-export const monsterrat= Montserrat({
+export const monsterrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800", "900", "100", "200"],
-  display: "swap"
+  display: "swap",
+});
+
+export const lora = Lora({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });

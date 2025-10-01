@@ -6,9 +6,9 @@
 [x] add redis caching on backend
 [] add so that you can click on each table row to see more details
 [x] modify fonts and header
-[] dark mode button
+[x] dark mode button
 [] add a readme
-[] total supply calculation
+[x] total supply calculation
 [] export to CSV
 [] docker compose
 [] confirm that I display data right
