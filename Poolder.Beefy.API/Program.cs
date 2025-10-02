@@ -23,7 +23,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
  });
 builder.Services.AddScoped<IBeefyService, BeefyService>();
 
-
 var app = builder.Build();
 
 app.UseCors();

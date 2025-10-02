@@ -2,11 +2,6 @@ using System.Text.Json;
 using Microsoft.Extensions.Caching.Distributed;
 using Poolder.Beefy.API.Models;
 
-public interface IBeefyService
-{
-    Task<PoolResponse> GetPoolsAsync();
-    Task<List<TokenData>> GetTokensAsync();
-}
 
 public class BeefyService : IBeefyService
 {
@@ -79,7 +74,6 @@ public class BeefyService : IBeefyService
                 }
             }
         }
-
 
         return pools ?? [];
     }
