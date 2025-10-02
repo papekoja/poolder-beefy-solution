@@ -1,0 +1,13 @@
+Backend:
+Api endpoints
+Swagger
+Redis cache
+Token name matching
+
+Frontend:
+Table
+Skeleton loading
+dark/light mode
+
+Additional:
+Docker containerized front and backend
